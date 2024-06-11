@@ -8,5 +8,7 @@
 }
 
 body {
-    background-image: url();
+    background-image: url("../img/wallpaper.jpg");
+    background-position: center;
+    background-size: cover;
 }
