@@ -1,250 +1,178 @@
-// Seleção de elementos
+// Seleção de Elementos
+// Adiciona o formulário
 const todoForm = document.querySelector("#todo-form");
+
+// Adiciona tarefas
 const todoInput = document.querySelector("#todo-input");
+
+// Inclui novas tarefas
 const todoList = document.querySelector("#todo-list");
+
+// Formulário de edição
 const editForm = document.querySelector("#edit-form");
+
+// Campo de edição 
 const editInput = document.querySelector("#edit-input");
+
+// Campo de cancelamento
 const cancelEditBtn = document.querySelector("#cancel-edit-btn");
-const searchInput = document.querySelector("#search-input");
-const eraseBtn = document.querySelector("#erase-button");
-const filterBtn = document.querySelector("#filter-select");
 
+let oldInputValue;
 
-// Função
-const saveTodo = (text, done = 0, save = 1) => {
+// Funções
+
+// Armazena o texto que vem pelo valor do input
+const saveTodo = (text) => {
+
+    // Estrutura da div todo-list 
+    // Div Geral
     const todo = document.createElement("div");
     todo.classList.add("todo");
-  
+
+    // Titulo
     const todoTitle = document.createElement("h3");
+    // Aqui armazenamos o texto recepido da função saveTodo
     todoTitle.innerText = text;
     todo.appendChild(todoTitle);
-  
+
+    // Botão Feito
     const doneBtn = document.createElement("button");
     doneBtn.classList.add("finish-todo");
-    doneBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+    // Em forma de texto o icone feito e introduzido aqui
+    doneBtn.innerHTML = '<i class="bx bx-check"></i>';
     todo.appendChild(doneBtn);
-  
+
+    // Botão Editar
     const editBtn = document.createElement("button");
     editBtn.classList.add("edit-todo");
-    editBtn.innerHTML = '<i class="fa-solid fa-pen"></i>';
+    editBtn.innerHTML = ' <i class="bx bxs-edit-alt"></i>';
     todo.appendChild(editBtn);
-  
+
+    // Botão Delete
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("remove-todo");
-    deleteBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    deleteBtn.innerHTML = ' <i class="bx bx-x"></i>';
     todo.appendChild(deleteBtn);
-  
-    // Utilizando dados da localStorage
-    if (done) {
-      todo.classList.add("done");
-    }
-  
-    if (save) {
-      saveTodoLocalStorage({ text, done: 0 });
-    }
-  
+    
+    // Coloca o "todo" na Lista geral que no caso é a div "todo-list"  
     todoList.appendChild(todo);
-  
+
+    // Após o envio o input fica vazio para adicionar mais tarefas
     todoInput.value = "";
-  };
-  
-  const toggleForms = () => {
+
+    // E aqui a tela foca novamente no input de adicionamento de tarefas
+    todoInput.focus();
+};
+
+    // Esconde os formulário, se já estiver escondido ele exibe
+const toggleForms = () => {
     editForm.classList.toggle("hide");
     todoForm.classList.toggle("hide");
     todoList.classList.toggle("hide");
-  };
-  
-  const updateTodo = (text) => {
+}
+
+const updateTodo = (text) => {
     const todos = document.querySelectorAll(".todo");
-  
+
     todos.forEach((todo) => {
-      let todoTitle = todo.querySelector("h3");
-  
-      if (todoTitle.innerText === oldInputValue) {
-        todoTitle.innerText = text;
-  
-        // Utilizando dados da localStorage
-        updateTodoLocalStorage(oldInputValue, text);
-      }
+        // Guarda o título da tarefa
+        let todoTitle = todo.querySelector("h3");
+        
+        // Encontra todo certo e altera seu texto
+        if (todoTitle.innerText === oldInputValue) {
+            todoTitle.innerText = text;
+        }
     });
-  };
-  
-  const getSearchedTodos = (search) => {
-    const todos = document.querySelectorAll(".todo");
-  
-    todos.forEach((todo) => {
-      const todoTitle = todo.querySelector("h3").innerText.toLowerCase();
-  
-      todo.style.display = "flex";
-  
-      console.log(todoTitle);
-  
-      if (!todoTitle.includes(search)) {
-        todo.style.display = "none";
-      }
-    });
-  };
-  
-  const filterTodos = (filterValue) => {
-    const todos = document.querySelectorAll(".todo");
-  
-    switch (filterValue) {
-      case "all":
-        todos.forEach((todo) => (todo.style.display = "flex"));
-  
-        break;
-  
-      case "done":
-        todos.forEach((todo) =>
-          todo.classList.contains("done")
-            ? (todo.style.display = "flex")
-            : (todo.style.display = "none")
-        );
-  
-        break;
-  
-      case "todo":
-        todos.forEach((todo) =>
-          !todo.classList.contains("done")
-            ? (todo.style.display = "flex")
-            : (todo.style.display = "none")
-        );
-  
-        break;
-  
-      default:
-        break;
-    }
-  };
+};
+// Finaliza funções
+
+
 
 // Eventos
+
+
+
+
+    // Enviar Formulário
 todoForm.addEventListener("submit", (e) => {
-    e.preventDefault(donneBtn);
-  
+    e.preventDefault();
+
+    // Guarda os valores inseridos no input
     const inputValue = todoInput.value;
 
-  
+    // Mini verificação para que o usuário não deixe o input em branco 
     if (inputValue) {
-      saveTodo(inputValue);
+        saveTodo(inputValue);
+        // Salvar Todo
     }
-  });
+});
 
-  document.addEventListener("click", (e) => {
+    // Indetifica em qual botão foi o click e qual elemento foi clicado e faz uma ação
+document.addEventListener("click", (e) => {
+
+    // Armazena o elemento que foi clicado, como por exemplo ele armazena botão "finish-todo"
     const targetEl = e.target;
+
+    // armazena o elemento pai mais próximo no html, no caso, temos a div "todo"
     const parentEl = targetEl.closest("div");
+
+    //Título da tarefa, essa variavél servirá como apoio
+    // para mapear as tarefas para edição das mesmas
     let todoTitle;
-  
+
+    // Indentifica se parentEl existe e guarda o texto contido no h3 da tarefa
     if (parentEl && parentEl.querySelector("h3")) {
-      todoTitle = parentEl.querySelector("h3").innerText || "";
+        todoTitle = parentEl.querySelector("h3").innerText;
     }
-  
+    // Finaliza Tarefas (Feito)
     if (targetEl.classList.contains("finish-todo")) {
-      parentEl.classList.toggle("done");
-  
-      updateTodoStatusLocalStorage(todoTitle);
+
+    // Conclui e retira a conclusão
+        parentEl.classList.toggle("done");
     }
-  
+
+    // Remove tarefas
     if (targetEl.classList.contains("remove-todo")) {
-      parentEl.remove();
-  
-      // Utilizando dados da localStorage
-      removeTodoLocalStorage(todoTitle);
+
+        // aciona a variável parentEl e a remove.
+        // parentEl é igual a div done.
+        parentEl.remove();
     }
-  
+
+    //    Edita Tarefas
     if (targetEl.classList.contains("edit-todo")) {
-      toggleForms();
-  
-      editInput.value = todoTitle;
-      oldInputValue = todoTitle;
+
+        // Ao clicar no botão de edição aciona a função,
+        // essa função esconde os formulários: criar tarefa e tarefas. 
+        toggleForms()
+
+        // Preenche o input de edição com o texto que o usuário quer editar
+        editInput.value = todoTitle;
+
+        // Guarda a tarefa antes dela ser editada,
+        // para caso o usuario cancelar a edição a tarefa não se alterar
+        oldInputValue = todoTitle;
     }
-  });
-  
-  cancelEditBtn.addEventListener("click", (e) => {
+});
+
+    // Cancelar edição
+cancelEditBtn.addEventListener("click", (e) => {
     e.preventDefault();
+
+    // Esconde a edição e exibe os outros fomulários
     toggleForms();
-  });
-  
-  editForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-  
-    const editInputValue = editInput.value;
-  
+});
+
+// Atualiza tarefa e volta a tela inicial
+editForm.addEventListener("submit", (e) => {
+
+    e.preventDefault()
+
+    const editInputValue = editInput.value
+
     if (editInputValue) {
-      updateTodo(editInputValue);
+        updateTodo(editInputValue)
+    
     }
-  
-    toggleForms();
-  });
-  
-  searchInput.addEventListener("keyup", (e) => {
-    const search = e.target.value;
-  
-    getSearchedTodos(search);
-  });
-  
-  eraseBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-  
-    searchInput.value = "";
-  
-    searchInput.dispatchEvent(new Event("keyup"));
-  });
-  
-  filterBtn.addEventListener("change", (e) => {
-    const filterValue = e.target.value;
-  
-    filterTodos(filterValue);
-  });
-  
-  // Local Storage
-  const getTodosLocalStorage = () => {
-    const todos = JSON.parse(localStorage.getItem("todos")) || [];
-  
-    return todos;
-  };
-  
-  const loadTodos = () => {
-    const todos = getTodosLocalStorage();
-  
-    todos.forEach((todo) => {
-      saveTodo(todo.text, todo.done, 0);
-    });
-  };
-  
-  const saveTodoLocalStorage = (todo) => {
-    const todos = getTodosLocalStorage();
-  
-    todos.push(todo);
-  
-    localStorage.setItem("todos", JSON.stringify(todos));
-  };
-  
-  const removeTodoLocalStorage = (todoText) => {
-    const todos = getTodosLocalStorage();
-  
-    const filteredTodos = todos.filter((todo) => todo.text != todoText);
-  
-    localStorage.setItem("todos", JSON.stringify(filteredTodos));
-  };
-  
-  const updateTodoStatusLocalStorage = (todoText) => {
-    const todos = getTodosLocalStorage();
-  
-    todos.map((todo) =>
-      todo.text === todoText ? (todo.done = !todo.done) : null
-    );
-  
-    localStorage.setItem("todos", JSON.stringify(todos));
-  };
-  
-  const updateTodoLocalStorage = (todoOldText, todoNewText) => {
-    const todos = getTodosLocalStorage();
-  
-    todos.map((todo) =>
-      todo.text === todoOldText ? (todo.text = todoNewText) : null
-    );
-  
-    localStorage.setItem("todos", JSON.stringify(todos));
-  };
-  
-  loadTodos();
+    toggleForms()
+})

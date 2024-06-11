@@ -60,7 +60,7 @@ input, select {
 .todo-container header {
     text-align: center;
     padding: 0 1rem 1rem;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #ffffff;
 }
 
 /* Todo Form */
@@ -136,6 +136,10 @@ input, select {
     transition: 3s;
 }
 
+#todo-list {
+    color: #102F5e;
+}
+
 .todo h3 {
     flex: 1;
     font-size: .9rem;
@@ -146,7 +150,7 @@ input, select {
 }
 
 .done h3 {
-    color: #fff;
+    color: #fd0000;
     text-decoration: line-through;
     font-style: italic;
 }
