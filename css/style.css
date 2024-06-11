@@ -25,3 +25,21 @@ button {
     align-items: center;
     transition: 0,4s;
 }
+
+button:hover {
+    background-color: #102F5e;
+}
+
+button:hover > i {
+    color: #fff;
+}
+
+button i {
+    color: #102F5e;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+input, select {
+    padding: 0.25rem 0.5rem;
+}
