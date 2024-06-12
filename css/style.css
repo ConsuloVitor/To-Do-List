@@ -155,3 +155,8 @@ input, select {
     font-style: italic;
 }
 
+option {
+    
+    background-color: #000000;
+}
+

@@ -39,19 +39,19 @@ const saveTodo = (text) => {
     const doneBtn = document.createElement("button");
     doneBtn.classList.add("finish-todo");
     // Em forma de texto o icone feito e introduzido aqui
-    doneBtn.innerHTML = '<i class="bx bx-check"></i>';
+    doneBtn.innerHTML = "<i class='bx bx-check'></i>";
     todo.appendChild(doneBtn);
 
     // Botão Editar
     const editBtn = document.createElement("button");
     editBtn.classList.add("edit-todo");
-    editBtn.innerHTML = ' <i class="bx bxs-edit-alt"></i>';
+    editBtn.innerHTML =  "<i class='bx bx-pencil' ></i>";
     todo.appendChild(editBtn);
 
     // Botão Delete
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("remove-todo");
-    deleteBtn.innerHTML = ' <i class="bx bx-x"></i>';
+    deleteBtn.innerHTML = "<i class='bx bx-x'></i>";
     todo.appendChild(deleteBtn);
     
     // Coloca o "todo" na Lista geral que no caso é a div "todo-list"  
